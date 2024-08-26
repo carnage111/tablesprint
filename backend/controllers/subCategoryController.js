@@ -2,7 +2,9 @@ import { createSubCategory, getSubCategoriesByCategoryId } from '../models/subCa
 import asyncHandler from 'express-async-handler';
 
 export const addSubCategory = asyncHandler(async (req, res) => {
-    const { subcategory_name, category_id, sub_category_sequence, status, image } = req.body;
+    const { subcategory_name, category_id, sub_category_sequence, status } = req.body;
+    const image = req.file.path;
+
     const subCategoryId = await createSubCategory({ subcategory_name, category_id, sub_category_sequence, status, image });
 
     res.status(201).json({

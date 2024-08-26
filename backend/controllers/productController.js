@@ -2,7 +2,9 @@ import { createProduct, getProductsBySubCategoryId } from '../models/productMode
 import asyncHandler from 'express-async-handler';
 
 export const addProduct = asyncHandler(async (req, res) => {
-    const { product_name, sub_category_id, category_id, status, image } = req.body;
+    const { product_name, sub_category_id, category_id, status } = req.body;
+    const image = req.file.path;
+
     const productId = await createProduct({ product_name, sub_category_id, category_id, status, image });
 
     res.status(201).json({
