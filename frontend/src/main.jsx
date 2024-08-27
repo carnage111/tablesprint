@@ -5,12 +5,15 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import TablesprintProvider from './contexts/TablesprintContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ChakraProvider>
-        <App />
+        <TablesprintProvider>
+          <App />
+        </TablesprintProvider>
       </ChakraProvider>
     </BrowserRouter>
   </StrictMode>,

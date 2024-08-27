@@ -2,10 +2,10 @@ import React from 'react'
 import Login from './components/Login'
 import { Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import Home from './components/Home';
+import './App.css';
 
-
-Home
 const App = () => {
   return (
     <div>

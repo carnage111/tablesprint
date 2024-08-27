@@ -5,12 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './signup-login.css';
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
+import { TablesprintState } from '../contexts/TablesprintContext';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const toast = useToast();
+  const { setUser } = TablesprintState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,9 +32,8 @@ const Login = () => {
           },
         }
       );
-      console.log(data);
-      
-
+      localStorage.setItem("user", JSON.stringify(data));
+      setUser(data);
       toast({
         title: "Login Successful",
         status: "success",
