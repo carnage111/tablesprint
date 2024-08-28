@@ -64,7 +64,8 @@ A web application for managing products, categories, and subcategories.
 
 Alternative: Manually Insert the User into MySQL
 You can generate a hashed password using Node.js, Python, or an online tool. Here's an example using Node.js and the bcryptjs library:
-    ```
+
+    ```js
     const bcrypt = require('bcryptjs');
     const password = "12345678";
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -73,7 +74,8 @@ You can generate a hashed password using Node.js, Python, or an online tool. Her
 
 This will output a hashed version of 12345678 that you can use in your SQL query.
 Replace the hashed_password_here with the hashed password you generated and run the following query in your MySQL database:
-    ```
+
+    ```sql
     INSERT INTO users (name, email, password) 
     VALUES ('bobb', 'bobb@gmail.com', 'hashed_password_here');
     ```
