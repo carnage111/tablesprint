@@ -1,4 +1,4 @@
-import { createProduct, getProductsBySubCategoryId, updateProduct, deleteProduct, getProductById } from '../models/productModel.js';
+import { createProduct, getProductsBySubCategoryId, updateProduct, deleteProduct, getProductById, fetchAllProducts } from '../models/productModel.js';
 import asyncHandler from 'express-async-handler';
 
 export const addProduct = asyncHandler(async (req, res) => {
@@ -20,6 +20,18 @@ export const addProduct = asyncHandler(async (req, res) => {
     });
 });
 
+
+//fetch all products
+export const getAllProducts = asyncHandler(async (req, res) => {
+    const products = await fetchAllProducts();
+    
+    res.status(200).json({
+        status: "success",
+        data: products,
+    });
+});
+
+//fetch products by subcategory id
 export const getProducts = asyncHandler(async (req, res) => {
     const { sub_category_id } = req.params;
     const products = await getProductsBySubCategoryId(sub_category_id);

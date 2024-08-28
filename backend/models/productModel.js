@@ -9,6 +9,12 @@ export const createProduct = async ({ product_name, sub_category_id, category_id
     return result.insertId;
 };
 
+export const fetchAllProducts = async () => {
+    const connection = await db();
+    const [rows] = await connection.query('SELECT * FROM products');
+    return rows;
+};
+
 export const getProductsBySubCategoryId = async (sub_category_id) => {
     const connection = await db();
     const [rows] = await connection.query('SELECT * FROM products WHERE sub_category_id = ?', [sub_category_id]);

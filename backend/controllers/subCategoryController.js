@@ -1,4 +1,4 @@
-import { createSubCategory, getSubCategoriesByCategoryId, updateSubCategory, deleteSubCategory, getSubCategoryById } from '../models/subCategoryModel.js';
+import { createSubCategory, getSubCategoriesByCategoryId, updateSubCategory, deleteSubCategory, getSubCategoryById, fetchAllSubCategories } from '../models/subCategoryModel.js';
 import asyncHandler from 'express-async-handler';
 
 export const addSubCategory = asyncHandler(async (req, res) => {
@@ -20,6 +20,17 @@ export const addSubCategory = asyncHandler(async (req, res) => {
     });
 });
 
+//fetch all subcategories
+export const getAllSubCategories = asyncHandler(async (req, res) => {
+    const subCategories = await fetchAllSubCategories();
+    
+    res.status(200).json({
+        status: "success",
+        data: subCategories,
+    });
+});
+
+//fetch subcategories by category id
 export const getSubCategories = asyncHandler(async (req, res) => {
     const { category_id } = req.params;
     const subCategories = await getSubCategoriesByCategoryId(category_id);
