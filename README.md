@@ -8,8 +8,8 @@ A web application for managing products, categories, and subcategories.
 
 * User registration and authentication
 * CRUD operations on products, categories, and subcategories
-* Server-side rendering with React
-* JWT-based authentication with cookies
+* Client-side rendering with React
+* JWT-based authentication
 * MySQL for data storage
 
 ## Prerequisites
@@ -27,28 +27,34 @@ A web application for managing products, categories, and subcategories.
     git clone https://github.com/carnage111/tablesprint.git
 
 2. Navigate to the project directory:
-$ cd tablesprint
+     ```sh
+    cd tablesprint
 
 3. Create a `.env` file with the necessary variables:
-$ PORT=5000
-$ CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
-$ CLOUDINARY_API_KEY=your-cloudinary-api-key
-$ CLOUDINARY_API_SECRET=your-cloudinary-api-secret
-$ JWT_SECRET=your-jwt-secret
-$ MYSQL_HOST=localhost
-$ MYSQL_USERNAME=your-mysql-username
-$ MYSQL_PASSWORD=your-mysql-password
-$ MYSQL_DATABASE_NAME=your-mysql-database-name
+    ```
+    PORT=5000
+    CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
+    CLOUDINARY_API_KEY=your-cloudinary-api-key
+    CLOUDINARY_API_SECRET=your-cloudinary-api-secret
+    JWT_SECRET=your-jwt-secret
+    MYSQL_HOST=localhost
+    MYSQL_USERNAME=your-mysql-username
+    MYSQL_PASSWORD=your-mysql-password
+    MYSQL_DATABASE_NAME=your-mysql-database-name
+    ```
 
 4. Install dependencies:
-$ npm i
+    ```sh
+    npm i
 
 5. navigate to frontend and backend directories on seperate terminals
-$ cd backend
-$ cd frontend
+    ```sh
+    cd backend
+    cd frontend
 
 6. Start the development server on both terminals: 
-$ npm run dev
+    ```sh
+    npm run dev
 
 ## Usage
 
