@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Button, Table, Image, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Table, Image, Modal, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { TablesprintState } from '../contexts/TablesprintContext';
+import { useToast } from "@chakra-ui/react";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+
+const isFileSizeValid = (file) => {
+  return file && file.size <= MAX_FILE_SIZE;
+};
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
@@ -16,6 +23,12 @@ const Category = () => {
   const [newCategory, setNewCategory] = useState({ category_name: '', category_sequence: '', image: null });
   const [editCategoryData, setEditCategoryData] = useState({ category_name: '', category_sequence: '', image: null, status: '' });
   const [deleteCategoryId, setDeleteCategoryId] = useState(null);
+
+  const [addLoading, setAddLoading] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const toast = useToast();
 
   useEffect(() => {
     fetchCategories();
@@ -38,11 +51,27 @@ const Category = () => {
     }
   };
 
+  const handleFileChange = (e, setFunction) => {
+    const file = e.target.files[0];
+    if (isFileSizeValid(file)) {
+      setFunction(prevState => ({ ...prevState, image: file }));
+    } else {
+      toast({
+        title: "File size exceeds 10MB limit",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
+
   const handleAddCategory = async () => {
     try {
+      setAddLoading(true);
       let formData = new FormData();
       formData.append('category_name', newCategory.category_name);
       formData.append('category_sequence', newCategory.category_sequence);
+      formData.append('status', 'active');
       formData.append('image', newCategory.image);
 
       let config = {
@@ -54,13 +83,28 @@ const Category = () => {
       await axios.post('http://localhost:5000/api/v1/category/add', formData, config);
       setShowAddModal(false);
       fetchCategories();
+      toast({
+        title: "Category added successfully!",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
     } catch (err) {
       console.error(err);
+      toast({
+        title: "Failed to add category",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setAddLoading(false);
     }
   };
 
   const handleEditCategory = async () => {
     try {
+      setEditLoading(true);
       let formData = new FormData();
       formData.append('category_name', editCategoryData.category_name);
       formData.append('category_sequence', editCategoryData.category_sequence);
@@ -76,13 +120,28 @@ const Category = () => {
       await axios.put(`http://localhost:5000/api/v1/category/edit/${currentCategory.id}`, formData, config);
       setShowEditModal(false);
       fetchCategories();
+      toast({
+        title: "Category updated successfully!",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
     } catch (err) {
       console.error(err);
+      toast({
+        title: "Failed to update category",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setEditLoading(false);
     }
   };
 
   const handleDeleteCategory = async () => {
     try {
+      setDeleteLoading(true);
       let config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -91,8 +150,22 @@ const Category = () => {
       await axios.delete(`http://localhost:5000/api/v1/category/delete/${deleteCategoryId}`, config);
       setShowDeleteModal(false);
       fetchCategories();
+      toast({
+        title: "Category deleted successfully!",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
     } catch (err) {
       console.error(err);
+      toast({
+        title: "Failed to delete category",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -130,8 +203,12 @@ const Category = () => {
               <Form.Label>Upload Image</Form.Label>
               <Form.Control 
                 type="file" 
-                onChange={(e) => setNewCategory({ ...newCategory, image: e.target.files[0] })}
+                accept="image/jpeg, image/png, image/jpg"
+                onChange={(e) => handleFileChange(e, setNewCategory)}
               />
+              <Form.Text className="text-muted">
+                Max file size: 10MB
+              </Form.Text>
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -139,8 +216,12 @@ const Category = () => {
           <Button variant="secondary" onClick={() => setShowAddModal(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleAddCategory}>
-            Add Category
+          <Button 
+            variant="primary" 
+            onClick={handleAddCategory} 
+            disabled={addLoading || !isFileSizeValid(newCategory.image)}
+          >
+            {addLoading ? <Spinner animation="border" size="sm" /> : 'Add Category'}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -174,18 +255,22 @@ const Category = () => {
               <Form.Label>Upload Image</Form.Label>
               <Form.Control 
                 type="file" 
-                onChange={(e) => setEditCategoryData({ ...editCategoryData, image: e.target.files[0] })}
+                accept="image/jpeg, image/png, image/jpg"
+                onChange={(e) => handleFileChange(e, setEditCategoryData)}
               />
+              <Form.Text className="text-muted">
+                Max file size: 10MB
+              </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Status</Form.Label>
-              <Form.Control 
+              <Form.Control
                 as="select"
                 value={editCategoryData.status}
                 onChange={(e) => setEditCategoryData({ ...editCategoryData, status: e.target.value })}
               >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
+                <option value={editCategoryData.status === "active" ? "active" : "inactive"}>{editCategoryData.status === "active" ? "active" : "inactive"}</option>
+                <option value={editCategoryData.status === "active" ? "inactive" : "active"}>{editCategoryData.status === "active" ? "inactive" : "active"}</option>
               </Form.Control>
             </Form.Group>
           </Form>
@@ -194,8 +279,12 @@ const Category = () => {
           <Button variant="secondary" onClick={() => setShowEditModal(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleEditCategory}>
-            Save Changes
+          <Button 
+            variant="primary" 
+            onClick={handleEditCategory} 
+            disabled={editLoading || (editCategoryData.image && !isFileSizeValid(editCategoryData.image))}
+          >
+            {editLoading ? <Spinner animation="border" size="sm" /> : 'Save Changes'}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -212,8 +301,8 @@ const Category = () => {
           <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleDeleteCategory}>
-            Delete
+          <Button variant="danger" onClick={handleDeleteCategory} disabled={deleteLoading}>
+            {deleteLoading ? <Spinner animation="border" size="sm" /> : 'Delete'}
           </Button>
         </Modal.Footer>
       </Modal>
