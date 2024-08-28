@@ -96,9 +96,10 @@ After logging in, you will be redirected to the dashboard. The dashboard has a l
 
 ## Screenshots
 
-![Screenshot 1](https://github.com/carnage111/tablesprint/blob/main/images/dashboard.png)
-![Screenshot 2](https://github.com/carnage111/tablesprint/blob/main/images/add_prod.png)
-![Screenshot 3](https://github.com/carnage111/tablesprint/blob/main/images/device_responsive.png)
+![Screenshot 1](https://github.com/carnage111/tablesprint/blob/main/images/login_1.png)
+![Screenshot 2](https://github.com/carnage111/tablesprint/blob/main/images/dashboard.png)
+![Screenshot 3](https://github.com/carnage111/tablesprint/blob/main/images/add_prod.png)
+![Screenshot 4](https://github.com/carnage111/tablesprint/blob/main/images/device_responsive.png)
 
 ## License
 
