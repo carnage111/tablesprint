@@ -386,8 +386,8 @@ const SubCategory = () => {
             <thead className="table-dark">
               <tr>
                 <th className="align-middle">Id</th>
-                <th className="align-middle">Sub Category name</th>
-                <th className="align-middle">Category name</th>
+                <th className="align-middle">SubCategory name</th>
+                <th className="align-middle">Category ID</th>
                 <th className="align-middle">Image</th>
                 <th className="align-middle">Status</th>
                 <th className="align-middle">Sequence</th>

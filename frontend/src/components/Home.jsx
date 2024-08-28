@@ -7,11 +7,13 @@ import Category from './Category';
 import Subcategory from './Subcategory';
 import Products from './Products';
 import { TablesprintState } from '../contexts/TablesprintContext';
+import { useToast } from '@chakra-ui/react';
 
 const Home = () => {
   const { logout } = TablesprintState();
   const [activeComponent, setActiveComponent] = useState('dashboard');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const toast = useToast();
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -31,6 +33,16 @@ const Home = () => {
   const handleLogoutConfirm = () => {
     logout();
     setShowLogoutModal(false);
+
+    // Display toast notification
+    toast({
+      title: "Logged out",
+      description: "You have successfully logged out.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+      position: "top",
+    });
   };
 
   return (
